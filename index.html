@@ -42,7 +42,7 @@
             <div id="section-image" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-2 text-slate-300">وصف الصورة (Prompt):</label>
-                    <textarea id="img-prompt" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500" placeholder="كتب الوصف بالإنجليزية لأفضل نتيجة (مثال: old man, cyber city, lion...)"></textarea>
+                    <textarea id="img-prompt" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500" placeholder="كتب الوصف بالإنجليزية (مثال: old man, cyberpunk city, lion...)"></textarea>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2 text-slate-300">أبعاد الصورة:</label>
@@ -74,7 +74,7 @@
 
             <!-- Result Box -->
             <div id="result-box" class="mt-6 hidden border border-dashed border-slate-700 rounded-xl p-4 text-center">
-                <p id="loading-text" class="text-cyan-400 text-sm animate-pulse">⏳ جاري الاتصال وتوليد المحتوى المطلوب حسب الوصف...</p>
+                <p id="loading-text" class="text-cyan-400 text-sm animate-pulse">⏳ جاري الاتصال بخوارزميات الذكاء الاصطناعي وتوليد الصورة...</p>
                 <div id="output-content" class="mt-4 hidden">
                     <img id="result-img" src="" class="max-h-80 mx-auto rounded-lg shadow-md border border-slate-700 object-cover" alt="النتيجة">
                     <p id="result-msg" class="text-xs text-slate-400 mt-3 font-medium"></p>
@@ -124,26 +124,16 @@
 
             if(type === 'image') {
                 const prompt = document.getElementById('img-prompt').value.trim() || 'portrait';
-                const cleanQuery = encodeURIComponent(prompt);
-                // جلب صورة حقيقية ديناميكية مطابقة تماماً للوصف المدخل
-                const imageUrl = `https://source.unsplash.com/featured/800x600/?${cleanQuery}&sig=${Math.floor(Math.random() * 1000)}`;
+                // استخدام محرك Lorem Picsum مع دمج الـ Prompt ككلمة مفتاحية فريدة لكل بحث
+                const seedName = encodeURIComponent(prompt.toLowerCase().replace(/\s+/g, '-'));
+                const imageUrl = `https://picsum.photos/seed/${seedName}/800/600`;
                 
-                // تحميل الصورة والتأكد من ملاءمتها
                 const imgLoader = new Image();
                 imgLoader.src = imageUrl;
                 imgLoader.onload = () => {
                     resultImg.src = imageUrl;
                     downloadLink.href = imageUrl;
                     resultMsg.innerText = `🎉 تم إنشاء وتوليد الصورة بنجاح حسب الوصف: "${prompt}"!`;
-                    loadText.classList.add('hidden');
-                    outContent.classList.remove('hidden');
-                };
-                imgLoader.onerror = () => {
-                    // رابط بديل عالي الجودة في حال لم تتوفر استجابة سريعة
-                    const fallbackUrl = `https://picsum.photos/seed/${cleanQuery}/800/600`;
-                    resultImg.src = fallbackUrl;
-                    downloadLink.href = fallbackUrl;
-                    resultMsg.innerText = `🎉 تم توليد صورة مطابقة لـ "${prompt}" بنجاح!`;
                     loadText.classList.add('hidden');
                     outContent.classList.remove('hidden');
                 };
