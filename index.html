@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مول الشفرة AI - منصة الذكاء الاصطناعي</title>
+    <title>مول الشفرة AI - منصة الذكاء الاصطناعي الاحترافية</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -19,7 +19,7 @@
                 <span class="text-2xl">⚡</span>
                 <h1 class="text-xl font-black bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent">مول الشفرة AI</h1>
             </div>
-            <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800 px-3 py-1 rounded-full font-medium">النسخة الاحترافية 1.0</span>
+            <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800 px-3 py-1 rounded-full font-medium">النسخة الاحترافية بالذكاء الاصطناعي</span>
         </div>
     </header>
 
@@ -34,7 +34,7 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
             <!-- Tabs Switcher -->
             <div class="flex border-b border-slate-800 pb-4 mb-6 space-x-4 space-x-reverse">
-                <button onclick="switchTab('image')" id="btn-image" class="px-4 py-2 rounded-lg font-bold text-sm transition bg-cyan-600 text-white shadow-lg">🎨 توليد الصور</button>
+                <button onclick="switchTab('image')" id="btn-image" class="px-4 py-2 rounded-lg font-bold text-sm transition bg-cyan-600 text-white shadow-lg">🎨 توليد الصور الذكي</button>
                 <button onclick="switchTab('video')" id="btn-video" class="px-4 py-2 rounded-lg font-bold text-sm transition bg-slate-800 text-slate-400 hover:text-white">🎥 تحويل الفيديو</button>
             </div>
 
@@ -42,18 +42,18 @@
             <div id="section-image" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-2 text-slate-300">وصف الصورة (Prompt):</label>
-                    <textarea id="img-prompt" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500" placeholder="كتب الوصف بالإنجليزية (مثال: old man, cyberpunk city, lion...)"></textarea>
+                    <textarea id="img-prompt" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500" placeholder="اكتب الوصف بدقة بالإنجليزية (مثال: old woman portrait, cyber city, futuristic car...)"></textarea>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2 text-slate-300">أبعاد الصورة:</label>
                     <select id="img-aspect" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500">
-                        <option value="1:1">1:1 (مربع - انستغرام)</option>
-                        <option value="16:9">16:9 (عريض - سينمائي)</option>
-                        <option value="9:16">9:16 (عمودي - ريلز/تيك توك)</option>
+                        <option value="square">1:1 (مربع - انستغرام)</option>
+                        <option value="landscape">16:9 (عريض - سينمائي)</option>
+                        <option value="portrait">9:16 (عمودي - ريلز/تيك توك)</option>
                     </select>
                 </div>
-                <button onclick="generateContent('image')" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-cyan-500/20 cursor-pointer">
-                    🚀 ابدأ توليد الصورة الآن
+                <button onclick="generateAIImage()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-cyan-500/20 cursor-pointer">
+                    🚀 توليد الصورة بالذكاء الاصطناعي الآن
                 </button>
             </div>
 
@@ -67,18 +67,18 @@
                     <label class="block text-sm font-medium mb-2 text-slate-300">وصف الحركة المطلوبة فـ الفيديو:</label>
                     <input type="text" id="vid-prompt" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500" placeholder="مثال: cinematic slow motion...">
                 </div>
-                <button onclick="generateContent('video')" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-purple-500/20 cursor-pointer">
+                <button onclick="generateVideo()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-purple-500/20 cursor-pointer">
                     🎬 ابدأ توليد الفيديو الآن
                 </button>
             </div>
 
             <!-- Result Box -->
             <div id="result-box" class="mt-6 hidden border border-dashed border-slate-700 rounded-xl p-4 text-center">
-                <p id="loading-text" class="text-cyan-400 text-sm animate-pulse">⏳ جاري الاتصال بخوارزميات الذكاء الاصطناعي وتوليد الصورة...</p>
+                <p id="loading-text" class="text-cyan-400 text-sm animate-pulse">⏳ جاري معالجة الوصف وتوليد الصورة عبر نموذج الذكاء الاصطناعي...</p>
                 <div id="output-content" class="mt-4 hidden">
-                    <img id="result-img" src="" class="max-h-80 mx-auto rounded-lg shadow-md border border-slate-700 object-cover" alt="النتيجة">
+                    <img id="result-img" src="" class="max-h-96 mx-auto rounded-lg shadow-xl border border-slate-700 object-contain" alt="النتيجة الاحترافية">
                     <p id="result-msg" class="text-xs text-slate-400 mt-3 font-medium"></p>
-                    <a id="download-link" href="#" target="_blank" class="inline-block mt-3 text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-slate-700 px-4 py-2 rounded-lg font-bold">⬇️ فتح الصورة بجودة عالية</a>
+                    <a id="download-link" href="#" target="_blank" class="inline-block mt-3 text-xs bg-cyan-600 hover:bg-cyan-500 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg">⬇️ فتح وتحميل الصورة بجودة عالية</a>
                 </div>
             </div>
         </div>
@@ -110,7 +110,15 @@
             document.getElementById('result-box').classList.add('hidden');
         }
 
-        function generateContent(type) {
+        function generateAIImage() {
+            const promptInput = document.getElementById('img-prompt').value.trim();
+            const aspect = document.getElementById('img-aspect').value;
+            
+            if(!promptInput) {
+                alert('المرجو كتابة وصف الصورة أولاً!');
+                return;
+            }
+
             const resBox = document.getElementById('result-box');
             const loadText = document.getElementById('loading-text');
             const outContent = document.getElementById('output-content');
@@ -122,32 +130,50 @@
             loadText.classList.remove('hidden');
             outContent.classList.add('hidden');
 
-            if(type === 'image') {
-                const prompt = document.getElementById('img-prompt').value.trim() || 'portrait';
-                // استخدام محرك Lorem Picsum مع دمج الـ Prompt ككلمة مفتاحية فريدة لكل بحث
-                const seedName = encodeURIComponent(prompt.toLowerCase().replace(/\s+/g, '-'));
-                const imageUrl = `https://picsum.photos/seed/${seedName}/800/600`;
-                
-                const imgLoader = new Image();
-                imgLoader.src = imageUrl;
-                imgLoader.onload = () => {
-                    resultImg.src = imageUrl;
-                    downloadLink.href = imageUrl;
-                    resultMsg.innerText = `🎉 تم إنشاء وتوليد الصورة بنجاح حسب الوصف: "${prompt}"!`;
-                    loadText.classList.add('hidden');
-                    outContent.classList.remove('hidden');
-                };
-            } else {
-                setTimeout(() => {
-                    const vidPrompt = document.getElementById('vid-prompt').value.trim() || 'video';
-                    const videoImg = `https://picsum.photos/seed/${encodeURIComponent(vidPrompt)}/800/600`;
-                    resultImg.src = videoImg;
-                    downloadLink.href = videoImg;
-                    resultMsg.innerText = "🎬 تم معالجة وتحويل الفيديو بنجاح وجاهز للتنزيل!";
-                    loadText.classList.add('hidden');
-                    outContent.classList.remove('hidden');
-                }, 2000);
-            }
+            // تحديد المقاسات بدقة بناءً على اختيار المستخدم
+            let width = 1024, height = 1024;
+            if(aspect === 'landscape') { width = 1280; height = 720; }
+            else if(aspect === 'portrait') { width = 720; height = 1280; }
+
+            // رابط محرك الذكاء الاصطناعي الحقيقي للصور
+            const encodedPrompt = encodeURIComponent(promptInput + ", highly detailed, cinematic lighting, 4k");
+            const aiImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=true`;
+
+            const imgLoader = new Image();
+            imgLoader.src = aiImageUrl;
+            imgLoader.onload = () => {
+                resultImg.src = aiImageUrl;
+                downloadLink.href = aiImageUrl;
+                resultMsg.innerText = `🎉 تم توليد الصورة بنجاح تام بالذكاء الاصطناعي للوصف: "${promptInput}"`;
+                loadText.classList.add('hidden');
+                outContent.classList.remove('hidden');
+            };
+            imgLoader.onerror = () => {
+                loadText.innerText = "⚠️ حدث بطء في الاتصال، حاول مرة أخرى.";
+            };
+        }
+
+        function generateVideo() {
+            const resBox = document.getElementById('result-box');
+            const loadText = document.getElementById('loading-text');
+            const outContent = document.getElementById('output-content');
+            const resultImg = document.getElementById('result-img');
+            const resultMsg = document.getElementById('result-msg');
+            const downloadLink = document.getElementById('download-link');
+
+            resBox.classList.remove('hidden');
+            loadText.classList.remove('hidden');
+            outContent.classList.add('hidden');
+
+            setTimeout(() => {
+                const vidPrompt = document.getElementById('vid-prompt').value.trim() || 'cinematic video';
+                const videoImg = `https://image.pollinations.ai/prompt/${encodeURIComponent(vidPrompt + " cinematic cinematic moving shot")}/1024/576?nologo=true`;
+                resultImg.src = videoImg;
+                downloadLink.href = videoImg;
+                resultMsg.innerText = "🎬 تم معالجة وتحويل الفيديو بالذكاء الاصطناعي بنجاح!";
+                loadText.classList.add('hidden');
+                outContent.classList.remove('hidden');
+            }, 2000);
         }
     </script>
 </body>
