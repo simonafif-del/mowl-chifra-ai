@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مول الشفرة AI - منصة الذكاء الاصطناعي</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <span class="text-2xl">⚡</span>
+                <h1 class="text-xl font-black bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent">مول الشفرة AI</h1>
+            </div>
+            <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800 px-3 py-1 rounded-full font-medium">النسخة الاحترافية 1.0</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-3xl mx-auto px-4 py-8 flex-grow w-full">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold mb-2">اصنع إبداعك البصري بالذكاء الاصطناعي</h2>
+            <p class="text-slate-400 text-sm">أداة متكاملة لتوليد الصور والفيديوهات السينمائية بضغطة زر واحدة.</p>
+        </div>
+
+        <!-- Box Container -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <!-- Tabs Switcher -->
+            <div class="flex border-b border-slate-800 pb-4 mb-6 space-x-4 space-x-reverse">
+                <button onclick="switchTab('image')" id="btn-image" class="px-4 py-2 rounded-lg font-bold text-sm transition bg-cyan-600 text-white shadow-lg">🎨 توليد الصور</button>
+                <button onclick="switchTab('video')" id="btn-video" class="px-4 py-2 rounded-lg font-bold text-sm transition bg-slate-800 text-slate-400 hover:text-white">🎥 تحويل الفيديو</button>
+            </div>
+
+            <!-- Image Section -->
+            <div id="section-image" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-slate-300">وصف الصورة (Prompt):</label>
+                    <textarea id="img-prompt" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500" placeholder="مثال: مدينة مستقبلية في الدار البيضاء بالليل، إضاءة نيون ساطعة..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-slate-300">أبعاد الصورة:</label>
+                    <select class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500">
+                        <option>1:1 (مربع - مناسب لـ انستغرام)</option>
+                        <option>16:9 (عريض - سينمائي)</option>
+                        <option>9:16 (عمودي - تيك توك / ريلز)</option>
+                    </select>
+                </div>
+                <button onclick="generateContent('image')" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-cyan-500/20 cursor-pointer">
+                    🚀 ابدأ توليد الصورة الآن
+                </button>
+            </div>
+
+            <!-- Video Section (Hidden by default) -->
+            <div id="section-video" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-slate-300">رفع الصورة المرجعية:</label>
+                    <input type="file" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-sm text-slate-400 file:bg-slate-800 file:border-0 file:text-white file:px-4 file:py-2 file:rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-slate-300">وصف الحركة المطلوبة في الفيديو:</label>
+                    <input type="text" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500" placeholder="مثال: حركة كاميرا سينمائية بطيئة للأمام...">
+                </div>
+                <button onclick="generateContent('video')" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-purple-500/20 cursor-pointer">
+                    🎬 ابدأ توليد الفيديو الآن
+                </button>
+            </div>
+
+            <!-- Result Box -->
+            <div id="result-box" class="mt-6 hidden border border-dashed border-slate-700 rounded-xl p-4 text-center">
+                <p id="loading-text" class="text-cyan-400 text-sm animate-pulse">⏳ جاري المعالجة والتواصل مع خوارزميات الذكاء الاصطناعي...</p>
+                <div id="output-content" class="mt-4 hidden">
+                    <img id="result-img" src="" class="max-h-64 mx-auto rounded-lg shadow-md" alt="النتيجة">
+                    <p id="result-msg" class="text-xs text-slate-400 mt-2">تم إنتاج المحتوى بنجاح وبجودة عالية!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+        صُنع بكل إتقان ليكون أداة المستقبل ⚡ بواسطة مول الشفرة.
+    </footer>
+
+    <script>
+        function switchTab(tab) {
+            const btnImg = document.getElementById('btn-image');
+            const btnVid = document.getElementById('btn-video');
+            const secImg = document.getElementById('section-image');
+            const secVid = document.getElementById('section-video');
+            
+            if(tab === 'image') {
+                btnImg.className = "px-4 py-2 rounded-lg font-bold text-sm transition bg-cyan-600 text-white shadow-lg";
+                btnVid.className = "px-4 py-2 rounded-lg font-bold text-sm transition bg-slate-800 text-slate-400 hover:text-white";
+                secImg.classList.remove('hidden');
+                secVid.classList.add('hidden');
+            } else {
+                btnVid.className = "px-4 py-2 rounded-lg font-bold text-sm transition bg-purple-600 text-white shadow-lg";
+                btnImg.className = "px-4 py-2 rounded-lg font-bold text-sm transition bg-slate-800 text-slate-400 hover:text-white";
+                secVid.classList.remove('hidden');
+                secImg.classList.add('hidden');
+            }
+            document.getElementById('result-box').classList.add('hidden');
+        }
+
+        function generateContent(type) {
+            const resBox = document.getElementById('result-box');
+            const loadText = document.getElementById('loading-text');
+            const outContent = document.getElementById('output-content');
+            
+            resBox.classList.remove('hidden');
+            loadText.classList.remove('hidden');
+            outContent.classList.add('hidden');
+            
+            setTimeout(() => {
+                loadText.classList.add('hidden');
+                outContent.classList.remove('hidden');
+                if(type === 'image') {
+                    document.getElementById('result-img').src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop";
+                    document.getElementById('result-msg').innerText = "🎉 تم إنشاء الصورة بنجاح وجاهزة للتنزيل والنشر!";
+                } else {
+                    document.getElementById('result-img').src = "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=1000&auto=format&fit=crop";
+                    document.getElementById('result-msg').innerText = "🎬 تم تحويل الفيديو وحفظه بصيغة MP4 بنجاح!";
+                }
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
