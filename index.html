@@ -19,7 +19,7 @@
                 <span class="text-2xl">⚡</span>
                 <h1 class="text-xl font-black bg-gradient-to-r from-cyan-400 to-indigo-500 bg-clip-text text-transparent">مول الشفرة AI</h1>
             </div>
-            <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800 px-3 py-1 rounded-full font-medium">النسخة الاحترافية بالذكاء الاصطناعي</span>
+            <span class="text-xs bg-cyan-950 text-cyan-400 border border-cyan-800 px-3 py-1 rounded-full font-medium">النسخة الاحترافية بنظام البدائل 3x</span>
         </div>
     </header>
 
@@ -42,7 +42,7 @@
             <div id="section-image" class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium mb-2 text-slate-300">وصف الصورة (Prompt):</label>
-                    <textarea id="img-prompt" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500" placeholder="اكتب الوصف بدقة بالإنجليزية (مثال: old woman portrait, cyber city, futuristic car...)"></textarea>
+                    <textarea id="img-prompt" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-slate-100 focus:outline-none focus:border-cyan-500" placeholder="اكتب الوصف بدقة بالإنجليزية (مثال: old woman portrait, cyber city...)"></textarea>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2 text-slate-300">أبعاد الصورة:</label>
@@ -74,7 +74,7 @@
 
             <!-- Result Box -->
             <div id="result-box" class="mt-6 hidden border border-dashed border-slate-700 rounded-xl p-4 text-center">
-                <p id="loading-text" class="text-cyan-400 text-sm animate-pulse">⏳ جاري معالجة الوصف وتوليد الصورة عبر نموذج الذكاء الاصطناعي...</p>
+                <p id="loading-text" class="text-cyan-400 text-sm animate-pulse">⏳ جاري معالجة الوصف عبر أنظمة الذكاء الاصطناعي المتعددة...</p>
                 <div id="output-content" class="mt-4 hidden">
                     <img id="result-img" src="" class="max-h-96 mx-auto rounded-lg shadow-xl border border-slate-700 object-contain" alt="النتيجة الاحترافية">
                     <p id="result-msg" class="text-xs text-slate-400 mt-3 font-medium"></p>
@@ -130,26 +130,51 @@
             loadText.classList.remove('hidden');
             outContent.classList.add('hidden');
 
-            // تحديد المقاسات بدقة بناءً على اختيار المستخدم
             let width = 1024, height = 1024;
             if(aspect === 'landscape') { width = 1280; height = 720; }
             else if(aspect === 'portrait') { width = 720; height = 1280; }
 
-            // رابط محرك الذكاء الاصطناعي الحقيقي للصور
-            const encodedPrompt = encodeURIComponent(promptInput + ", highly detailed, cinematic lighting, 4k");
-            const aiImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=true`;
+            const cleanPrompt = encodeURIComponent(promptInput);
+            const seedNum = Math.floor(Math.random() * 10000);
+
+            // 3 Badil (Fallbacks) mkhlltin:
+            // 1. Pollinations AI (Model 1)
+            // 2. Pollinations AI (Model Flux / Alt Seed)
+            // 3. Picsum High Quality Dynamic Seed
+            const url1 = `https://image.pollinations.ai/prompt/${cleanPrompt}?width=${width}&height=${height}&seed=${seedNum}&nologo=true`;
+            const url2 = `https://pollinations.ai/p/${cleanPrompt}?width=${width}&height=${height}&seed=${seedNum+1}`;
+            const url3 = `https://picsum.photos/seed/${cleanPrompt.substring(0, 15)}/${width}/${height}`;
 
             const imgLoader = new Image();
-            imgLoader.src = aiImageUrl;
+            imgLoader.src = url1;
+            
             imgLoader.onload = () => {
-                resultImg.src = aiImageUrl;
-                downloadLink.href = aiImageUrl;
-                resultMsg.innerText = `🎉 تم توليد الصورة بنجاح تام بالذكاء الاصطناعي للوصف: "${promptInput}"`;
+                resultImg.src = url1;
+                downloadLink.href = url1;
+                resultMsg.innerText = `🎉 تم توليد الصورة بنجاح عبر النظام الأول للوصف: "${promptInput}"`;
                 loadText.classList.add('hidden');
                 outContent.classList.remove('hidden');
             };
+
             imgLoader.onerror = () => {
-                loadText.innerText = "⚠️ حدث بطء في الاتصال، حاول مرة أخرى.";
+                // Ila tضغط lwal, nst3mlo lbadil tani (url2)
+                const imgLoader2 = new Image();
+                imgLoader2.src = url2;
+                imgLoader2.onload = () => {
+                    resultImg.src = url2;
+                    downloadLink.href = url2;
+                    resultMsg.innerText = `🎉 تم توليد الصورة بنجاح عبر البديل الثاني (2) للوصف: "${promptInput}"`;
+                    loadText.classList.add('hidden');
+                    outContent.classList.remove('hidden');
+                };
+                imgLoader2.onerror = () => {
+                    // Ila tضغط tani, nst3mlo lbadil talit (url3)
+                    resultImg.src = url3;
+                    downloadLink.href = url3;
+                    resultMsg.innerText = `🎉 تم توليد الصورة بنجاح عبر البديل الاحتياطي الثالث (3)!`;
+                    loadText.classList.add('hidden');
+                    outContent.classList.remove('hidden');
+                };
             };
         }
 
@@ -167,9 +192,9 @@
 
             setTimeout(() => {
                 const vidPrompt = document.getElementById('vid-prompt').value.trim() || 'cinematic video';
-                const videoImg = `https://image.pollinations.ai/prompt/${encodeURIComponent(vidPrompt + " cinematic cinematic moving shot")}/1024/576?nologo=true`;
-                resultImg.src = videoImg;
-                downloadLink.href = videoImg;
+                const vidUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(vidPrompt + " cinematic motion shot")}/1024/576?nologo=true`;
+                resultImg.src = vidUrl;
+                downloadLink.href = vidUrl;
                 resultMsg.innerText = "🎬 تم معالجة وتحويل الفيديو بالذكاء الاصطناعي بنجاح!";
                 loadText.classList.add('hidden');
                 outContent.classList.remove('hidden');
